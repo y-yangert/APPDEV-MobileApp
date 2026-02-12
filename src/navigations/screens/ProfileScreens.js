@@ -3,8 +3,18 @@ import React from 'react'
 
 const ProfileScreens = () => {
   return (
-    <View>
+    
+    <View 
+      style = {{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'red',
+        borderWidth: 2,
+      }}>
+
       <Text>ProfileScreens</Text>
+
     </View>
   )
 }
