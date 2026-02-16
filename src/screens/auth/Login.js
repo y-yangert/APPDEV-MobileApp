@@ -1,39 +1,79 @@
-import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
+import CustomTextInput from '../../components/CustomTextInput';
+import { ROUTES } from '../../utils';
+import { IMAGES } from '../../utils';
 
 const Login = () => {
+    const [emailAdd, setEmailAdd] = useState('');
+    const [password, setPassword] = useState('');
 
     const navigation = useNavigation();
 
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: 'red',
-                borderWidth: 2,
-            }}
-        >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-            <Text Style={{ fontSize: 40 }}>Login Screen</Text>
+            <Image source={{ uri: IMAGES.LOGO, }} style={{ margin: 50, width: 200, height: 100 }} />
 
-            {/* button */}
+            <Text style={{ fontSize: 20, }}>Welcome!</Text>
+            <CustomTextInput
+                label={'Email Address'}
+                placeholder={'Enter your e-mail'}
+                value={val => setEmailAdd(val)}
+                containerStyle={{
+                    padding: 10,
+                    width: '80%',
+                    marginTop: 10,
+                }}
+                textStyle={{
+                    fontSize: 20,
+                }}
+            />
 
-            <TouchableOpacity>
+            <CustomTextInput
+                label={'Password'}
+                placeholder={'Enter your password'}
+                value={val => setPassword(val)}
+                containerStyle={{
+                    padding: 10,
+                    width: '80%',
+                }}
+                textStyle={{
+                    fontSize: 20,
+                }}
+            />
+
+            <TouchableOpacity
+                style={{ margin: 10 }}
+                onPress={() => {
+                    if (emailAdd != '123' || password != '123') {
+                        return Alert.alert('Incorrect credentials', 'Please try again');
+
+                    }
+
+                    navigation.navigate(ROUTES.HOME);
+                }}
+            >
                 <View
                     style={{
-                        backgroundColor: 'blue',
                         padding: 10,
-                    }}>
-                    <Text>
-                        Login
-                    </Text>
+                        backgroundColor: 'black',
+                        borderRadius: 10,
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: 'white',
+                            fontSize: 20
+                        }}>LOGIN</Text>
                 </View>
             </TouchableOpacity>
-        </View>
-    )
-}
 
-export default Login
+            <Text style={{ color: 'grey', marginTop: 50, }}>Test email: {emailAdd}</Text>
+            <Text style={{ color: 'grey', marginTop: 10, }}>Test password: {password}</Text>
+        </View>
+    );
+};
+
+export default Login;

@@ -3,8 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 //screens
-import HomeScreen from '../screens/HomeScreens';
-import ProfileScreen from '../screens/ProfileScreens';
+import HomeScreens from '../screens/main/HomeScreens';
+import ProfileScreens from '../screens/main/ProfileScreens';
 import Login from '../screens/auth/Login'
 
 //utils
@@ -13,9 +13,10 @@ import { NavigationContainer } from "@react-navigation/native";
 
 const MainNav = () => {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />
-            <Stack.Screen name={ROUTES.PROFILE} component={ProfileScreen} />
+        <Stack.Navigator initialRouteName={ROUTES.HOME}>
+            <Stack.Screen name={ROUTES.HOME} component={HomeScreens} />
+            <Stack.Screen name={ROUTES.PROFILE} component={ProfileScreens} />
+            <Stack.Screen name={ROUTES.LOGIN} component={Login} />
         </Stack.Navigator>
     );
 };

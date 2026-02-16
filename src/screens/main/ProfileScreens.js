@@ -1,11 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const HomeScreens = () => {
+const ProfileScreens = () => {
   return (
 
     <View
-      style = {{
+      style={{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -13,10 +13,10 @@ const HomeScreens = () => {
         borderWidth: 2,
       }}>
 
-      <Text>HomeScreens</Text>
-  
+      <Text>ProfileScreens</Text>
+
     </View>
   )
 }
 
-export default HomeScreens
+export default ProfileScreens;
