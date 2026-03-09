@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const HomeScreens = () => {
+const HomeScreen = () => {
   return (
     <View
       style={{
@@ -12,9 +12,9 @@ const HomeScreens = () => {
         borderWidth: 1,
       }}
     >
-      <Text>Welcome to the Home Screen!</Text>
+      <Text>Welcome to the Homescreen!</Text>
     </View>
   );
 };
 
-export default HomeScreens;
+export default HomeScreen;

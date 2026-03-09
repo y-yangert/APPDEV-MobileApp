@@ -9,6 +9,8 @@ import CustomButton from '../../components/CustomButton';
 import { ROUTES } from '../../utils';
 import { IMAGES } from '../../utils';
 
+import { login } from '../../api/auth';
+
 const Login = () => {
   const [emailAdd, setEmailAdd] = useState('');
   const [password, setPassword] = useState('');
@@ -22,7 +24,7 @@ const Login = () => {
         style={{ margin: 50, width: 100, height: 50 }}
       />
 
-      <Text style={{ fontSize: 20 }}>Welcome!</Text>
+      <Text style={{ fontSize: 16 }}>Welcome to Brews & Books!</Text>
       <CustomTextInput
         label={'Email Address'}
         placeholder={'Enter your e-mail'}
