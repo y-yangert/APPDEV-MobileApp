@@ -1,4 +1,4 @@
-package com.lazaro
+package com.brewsnbooks
 
 import android.app.Application
 import com.facebook.react.PackageList

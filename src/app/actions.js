@@ -1,0 +1,29 @@
+// mga enums
+
+// AUTH/USER_LOGIN
+export const USER_LOGIN = 'USER_LOGIN';
+export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
+export const USER_LOGIN_COMPLETED = 'USER_LOGIN_COMPLETED';
+export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
+export const USER_LOGIN_RESET = 'USER_LOGIN_RESET';
+
+// AUTH/USER_REGISTER
+export const USER_REGISTER = 'USER_REGISTER';
+export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
+export const USER_REGISTER_COMPLETED = 'USER_REGISTER_COMPLETED';
+export const USER_REGISTER_ERROR = 'USER_REGISTER_ERROR';
+
+// Action creators
+export const userLogin = payload => ({
+  type: USER_LOGIN,
+  payload,
+});
+
+export const userRegister = payload => ({
+  type: USER_REGISTER,
+  payload,
+});
+
+export const resetLogin = () => ({
+  type: USER_LOGIN_RESET,
+});

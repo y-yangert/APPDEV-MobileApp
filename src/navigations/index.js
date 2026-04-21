@@ -1,20 +1,30 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-
-import MainNav from './MainNavigation';
-import AuthNav from './AuthNavigation';
 import { useEffect } from 'react';
+import { Platform, StatusBar, useColorScheme } from 'react-native';
+
+import AuthNav from './AuthNavigation';
+import MainNav from './MainNavigation';
+import { useSelector } from 'react-redux';
 
 export default () => {
-  // see status bar
+  const isDarkMode = useColorScheme() === 'dark';
+  const { data } = useSelector(state => state.auth);
+
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('#000000', true);
+    }
+
     StatusBar.setBarStyle('dark-content', true);
-  }, []);
+  }, [isDarkMode]);
+
+  console.log('TEST: ', JSON.stringify(data, null, 2));
+
+  let isLoggedIn = !!data;
 
   return (
     <NavigationContainer>
-      <AuthNav />
+      {isLoggedIn ? <MainNav /> : <AuthNav />}
     </NavigationContainer>
   );
 };

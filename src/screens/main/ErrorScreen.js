@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const ProfileScreen = () => {
+const ErrorScreen = () => {
   return (
     <View
       style={{
@@ -12,9 +12,9 @@ const ProfileScreen = () => {
         borderWidth: 2,
       }}
     >
-      <Text>ProfileScreens</Text>
+      <Text>Error: User not found!</Text>
     </View>
   );
 };
 
-export default ProfileScreen;
+export default ErrorScreen;

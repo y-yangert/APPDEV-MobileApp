@@ -1,5 +1,8 @@
 export default {
-    HOME: 'Home',
-    PROFILE: 'Profile',
-    LOGIN: 'Login',
+  LOGIN: 'Login',
+  REGISTER: 'Register',
+
+  HOME: 'Home',
+  PROFILE: 'Profile',
+  ERROR: 'Error',
 };

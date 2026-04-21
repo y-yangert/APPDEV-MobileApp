@@ -1,31 +1,37 @@
-import { View, TouchableOpacity, Text } from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 
-const CustomButton = ({ containerStyle, textStyle, label, onPress }) => {
+const CustomButton = ({
+  containerStyle,
+  label,
+  textStyle,
+  onPress,
+  loading,
+}) => {
+  const { width, height } = Dimensions.get('window');
+
   return (
-    <View style={containerStyle}>
-      <TouchableOpacity style={{ margin: 10 }} onPress={onPress}>
-        <View
-          style={{
-            padding: 10,
-            backgroundColor: 'black',
-            borderRadius: 10,
-          }}
-        >
-          <Text
-            style={[
-              textStyle,
-              {
-                color: 'white',
-                fontSize: 20,
-              },
-            ]}
-          >
-            {label}
-          </Text>
+    <>
+      {loading ? (
+        <View className="h-20 p-4">
+          <ActivityIndicator size={'large'} color={'blue'} />
         </View>
-      </TouchableOpacity>
-    </View>
+      ) : (
+        <View style={containerStyle}>
+          <TouchableOpacity onPress={onPress}>
+            <View style={{ padding: width * 0.014 }}>
+              <Text style={textStyle}>{label}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
   );
 };
 
