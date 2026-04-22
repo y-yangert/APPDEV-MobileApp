@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+import './global.css';
 import { View } from 'react-native';
 
-import HomeScreen from './src/navigations/screens/HomeScreens';
-import ProfileScreen from './src/navigations/screens/ProfileScreens';
+import AppNavigationNi from './src/navigations';
 
-const App = () => {
+import rootSaga from './src/app/sagas';
+import configureStore from './src/app/reducers';
+
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
+const { store, persistor, runSaga } = configureStore();
+runSaga(rootSaga);
+
+const App: FC = () => {
   return (
-    <View style = {{ flex: 1}}>
-      <HomeScreen />
-      <ProfileScreen />
-    </View>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <View className="flex-1">
+          <AppNavigationNi />
+        </View>
+      </PersistGate>
+    </Provider>
   );
 };
 
