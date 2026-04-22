@@ -1,26 +1,24 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { Platform, StatusBar, useColorScheme } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/reducers';
 
 import AuthNav from './AuthNavigation';
 import MainNav from './MainNavigation';
-import { useSelector } from 'react-redux';
 
-export default () => {
+const RootNavigator: FC = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const { data } = useSelector(state => state.auth);
+  const { data } = useSelector((state: RootState) => state.auth);
 
-  useEffect(() => {
+  useEffect((): void => {
     if (Platform.OS === 'android') {
       StatusBar.setBackgroundColor('#000000', true);
     }
-
     StatusBar.setBarStyle('dark-content', true);
   }, [isDarkMode]);
 
-  console.log('TEST: ', JSON.stringify(data, null, 2));
-
-  let isLoggedIn = !!data;
+  const isLoggedIn = !!data;
 
   return (
     <NavigationContainer>
@@ -28,3 +26,5 @@ export default () => {
     </NavigationContainer>
   );
 };
+
+export default RootNavigator;

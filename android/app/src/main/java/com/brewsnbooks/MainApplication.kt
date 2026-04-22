@@ -1,4 +1,4 @@
-package com.brewsnbooks
+package com.pahina
 
 import android.app.Application
 import com.facebook.react.PackageList

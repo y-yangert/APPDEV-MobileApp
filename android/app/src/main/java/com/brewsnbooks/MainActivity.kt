@@ -1,4 +1,4 @@
-package com.brewsnbooks
+package com.pahina
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -9,7 +9,7 @@ import com.swmansion.rnscreens.fragment.restoration.RNScreensFragmentFactory
 
 class MainActivity : ReactActivity() {
 
-  override fun getMainComponentName(): String = "BrewsnBooks"
+  override fun getMainComponentName(): String = "Pahina"
 
   override fun onCreate(savedInstanceState: Bundle?) {
     supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()

@@ -1,5 +1,5 @@
-import { verifyInstallation } from 'nativewind';
-import React from 'react';
+import React, { FC } from 'react';
+
 import './global.css';
 import { View } from 'react-native';
 
@@ -11,11 +11,10 @@ import configureStore from './src/app/reducers';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-
 const { store, persistor, runSaga } = configureStore();
 runSaga(rootSaga);
 
-const App = () => {
+const App: FC = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

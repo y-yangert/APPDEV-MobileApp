@@ -1,18 +1,20 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import React, { FC } from 'react';
 
-const Stack = createStackNavigator();
-
-//screens
+// Screens
 import Login from '../screens/auth/Login';
 import Register from '../screens/auth/Register';
 import HomeScreen from '../screens/main/HomeScreen';
 import ErrorScreen from '../screens/main/ErrorScreen';
 
-//utils
+// Utils
 import { ROUTES } from '../utils';
-import { NavigationContainer } from '@react-navigation/native';
 
-const AuthNav = () => {
+const Stack = createStackNavigator();
+
+interface AuthNavProps {}
+
+const AuthNav: FC<AuthNavProps> = () => {
   return (
     <Stack.Navigator initialRouteName={ROUTES.LOGIN}>
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />

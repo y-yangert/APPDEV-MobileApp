@@ -1,18 +1,18 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import React, { FC } from 'react';
 
-const Stack = createStackNavigator();
-
-//screens
+// Screens
 import HomeScreen from '../screens/main/HomeScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
 import ErrorScreen from '../screens/main/ErrorScreen';
 import Login from '../screens/auth/Login';
 
-//utils
+// Utils
 import { ROUTES } from '../utils';
-import { NavigationContainer } from '@react-navigation/native';
 
-const MainNav = () => {
+const Stack = createStackNavigator();
+
+const MainNav: FC = () => {
   return (
     <Stack.Navigator initialRouteName={ROUTES.HOME}>
       <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />

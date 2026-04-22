@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   Text,
@@ -8,54 +8,23 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-//import components
 import { useDispatch, useSelector } from 'react-redux';
+import type { RootState, AppDispatch } from '../../app/store';
 import { userLogin } from '../../app/actions';
 
 import CustomTextInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
 
-import { ROUTES } from '../../utils';
-import { IMAGES } from '../../utils';
-import { createStackNavigator } from '@react-navigation/stack';
-
-const Stack = createStackNavigator();
-
-// .js -> javascript
-// .jsx -> javascript extension
-// .ts -> typescript
-// .tsx -> typescipt extention
+import { ROUTES, IMAGES } from '../../utils';
 
 const Login = () => {
-
-  // getter / setters
-  const [username, setUsername] = useState<number>(0); // '<>' -> datatype
-  const [password, setPassword] = useState('');
-
-  // const { isLoading, isError, errorMessage } = useSelector(state => state.auth);
-
-  const { isLoading } = useSelector( //gikan sa reducer
-    ( state: { auth: { isLoading: boolean } } ) => state.auth // <- typscript format
-  );
-
-  // useEffect(() => {
-  //   if (isError && errorMessage) {
-  //     <Stack.Navigator>
-  //       <Stack.Screen name={ROUTES.ERROR} component={ErrorScreen} />
-  //     </Stack.Navigator>;
-  //   } else if (isError) {
-  //     Alert.alert(
-  //       'Login Error',
-  //       'An unexpected error occurred. Please try again.',
-  //     );
-  //   }
-  // });
-
+  const dispatch = useDispatch<AppDispatch>();
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const { isLoading } = useSelector((state: RootState) => state.auth || { isLoading: false });
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     dispatch(userLogin({ username, password }));
   };
 
@@ -129,8 +98,8 @@ const Login = () => {
 
         <CustomTextInput
           label="Username"
-          placeholder="Enter your username or email"
-          value={(val: number) => setUsername(val)}
+          placeholder="Enter your username"
+          onChangeText={setUsername}
           containerStyle={{
             width: '100%',
             marginBottom: 20,
@@ -146,7 +115,8 @@ const Login = () => {
         <CustomTextInput
           label="Password"
           placeholder="Enter your password"
-          value={(val: string) => setPassword(val)}
+          onChangeText={setPassword}
+          secureTextEntry
           containerStyle={{
             width: '100%',
           }}
@@ -217,7 +187,7 @@ const Login = () => {
           style={{
             marginTop: 8,
             paddingVertical: 12,
-            paddingHorizontal: 24, 
+            paddingHorizontal: 24,
           }}
         >
           <Text
@@ -236,5 +206,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// typescript -> hatag error daan

@@ -1,14 +1,16 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { FC } from 'react';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { resetLogin } from '../../app/actions';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+type NavigationPropType = NavigationProp<any>;
+
+const HomeScreen: FC = () => {
+  const navigation = useNavigation<NavigationPropType>();
   const dispatch = useDispatch();
-  const handleLogout = () => {
+
+  const handleLogout = (): void => {
     dispatch(resetLogin());
     navigation.navigate('Login');
   };
