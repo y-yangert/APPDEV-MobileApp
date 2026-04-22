@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import HomeScreen from './src/screens/HomeScreens';
-import ProfileScreen from './src/screens/ProfileScreens';
+import HomeScreen from './src/navigations/screens/HomeScreens';
+import ProfileScreen from './src/navigations/screens/ProfileScreens';
 
 const App = () => {
   return (
