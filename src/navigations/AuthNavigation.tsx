@@ -16,11 +16,10 @@ interface AuthNavProps {}
 
 const AuthNav: FC<AuthNavProps> = () => {
   return (
-    <Stack.Navigator initialRouteName={ROUTES.LOGIN}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.REGISTER} component={Register} />
       <Stack.Screen name={ROUTES.ERROR} component={ErrorScreen} />
-      <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />
     </Stack.Navigator>
   );
 };

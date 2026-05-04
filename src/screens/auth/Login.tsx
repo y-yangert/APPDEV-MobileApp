@@ -1,208 +1,308 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Alert,
+  View,
   Text,
   TouchableOpacity,
-  View,
   Image,
+  Alert,
+  StyleSheet,
   ScrollView,
 } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '../../app/store';
-import { userLogin } from '../../app/actions';
+import { USER_LOGIN, USER_LOGIN_RESET } from '../../app/actions/auth';
 
 import CustomTextInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import { ROUTES, IMAGES } from '../../utils';
+
+type RootState = {
+  auth: {
+    user: { id: number; username: string; email?: string } | null;
+    token: string | null;
+    isLoading: boolean;
+    error: string | null;
+  };
+};
+
+type AppDispatch = any;
 
 const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { isLoading } = useSelector((state: RootState) => state.auth || { isLoading: false });
+
+  const { isLoading } = useSelector((state: RootState) => state.auth || { isLoading: false, error: null });
+  const { user, error } = useSelector((state: RootState) => state.auth || { data: null, error: null });
+
+  const [alertShown, setAlertShown] = useState<boolean>(false);
+
   const navigation = useNavigation();
 
+  // this runs on mount + every time `user`/`isLoading`/`error` change
+  useEffect(() => {
+    if (!isLoading && error) {
+      Alert.alert('Login Failed', error);
+    }
+
+    // on successful login (user exists), NAVIGATE
+    if (!isLoading && user) {
+      navigation.replace(ROUTES.HOME); // or whatever your main route key is
+    }
+  }, [user, isLoading, error, navigation]);
+
   const handleLogin = () => {
-    dispatch(userLogin({ username, password }));
+    if (!username || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    console.log('Login attempt:', { username, password: '***' });
+
+    dispatch({
+      type: USER_LOGIN,
+      payload: { username, password }
+    })
   };
 
   return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: '#f8f4f0' }}
+    <ScrollView // whole page
+      style={
+        {
+          flex: 1,
+          backgroundColor: 'rgb(240 230 218)',
+          // borderColor: 'red',
+          // borderWidth: 5,
+        }}
       contentContainerStyle={{
         flexGrow: 1,
-        justifyContent: 'center',
-        padding: 24,
+        justifyContent: 'space-between', //y
+        padding: 30,
+        paddingBottom: 40,
+
       }}
       showsVerticalScrollIndicator={false}
     >
-      {/* Header Section */}
-      <View style={{ alignItems: 'center', marginBottom: 40 }}>
+
+      {/* logo */}
+      <View
+        style={
+          {
+            display: 'flex',
+            alignItems: 'flex-end', //x
+            // borderColor: 'red',
+            // borderWidth: 2,
+          }}>
+
         <Image
-          source={{ uri: IMAGES.LOGO }}
+          source={IMAGES.LOGO}
           style={{
-            width: 120,
-            height: 60,
-            marginBottom: 16,
+            width: 40,
+            height: 40,
             resizeMode: 'contain',
           }}
         />
-        <Text
-          style={{
-            fontSize: 28,
-            fontWeight: '700',
-            color: '#2d1b0f',
-            marginBottom: 8,
-          }}
-        >
-          Pahina
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            color: '#654c2e',
-            fontWeight: '500',
-          }}
-        >
-          Welcome back!
-        </Text>
       </View>
 
-      {/* Login Card */}
+
+
+      {/* main form */}
       <View
         style={{
-          backgroundColor: 'white',
-          borderRadius: 20,
-          padding: 32,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 10 },
-          shadowOpacity: 0.1,
-          shadowRadius: 20,
-          elevation: 10,
-          minHeight: 400,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          minHeight: 350,
+          rowGap: 30,
+          // borderColor: 'green',
+          // borderWidth: 2,
         }}
       >
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '600',
-            color: '#2d1b0f',
-            marginBottom: 8,
-            textAlign: 'center',
-          }}
-        >
-          Sign In
-        </Text>
 
-        <CustomTextInput
-          label="Username"
-          placeholder="Enter your username"
-          onChangeText={setUsername}
-          containerStyle={{
-            width: '100%',
-            marginBottom: 20,
-          }}
-          textStyle={{
-            color: 'black',
-            fontSize: 16,
-            paddingVertical: 16,
-            paddingHorizontal: 20,
-          }}
-        />
-
-        <CustomTextInput
-          label="Password"
-          placeholder="Enter your password"
-          onChangeText={setPassword}
-          secureTextEntry
-          containerStyle={{
-            width: '100%',
-          }}
-          textStyle={{
-            color: 'black',
-            fontSize: 16,
-            paddingVertical: 16,
-            paddingHorizontal: 20,
-          }}
-        />
-
-        <CustomButton
-          label={isLoading ? 'Signing In...' : 'Sign In'}
-          containerStyle={{
-            marginTop: 12,
-            width: '100%',
-            backgroundColor: '#654c2e',
-            borderRadius: 12,
-            paddingVertical: 18,
-            shadowColor: '#654c2e',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 5,
-          }}
-          textStyle={{
-            color: '#ffffff',
-            fontSize: 18,
-            fontWeight: '600',
-            textAlign: 'center',
-          }}
-          loading={isLoading}
-          onPress={handleLogin}
-        />
-
-        {/* Forgot Password */}
-        <TouchableOpacity
-          style={{ alignItems: 'center', marginTop: 16 }}
-          onPress={() =>
-            Alert.alert('Forgot Password', 'Contact admin for reset')
-          }
-        >
+        {/* header */}
+        <View style={{
+          // borderColor: 'red',
+          // borderWidth: 2,
+        }}>
           <Text
             style={{
-              color: '#654c2e',
+              fontSize: 40,
+              fontWeight: '800',
+              color: 'rgb(117 7 12)',
+              fontFamily: 'LibreBaskerville',
+            }}
+          >
+            Hi, Welcome!
+          </Text>
+        </View>
+
+        <View style={{
+          // borderColor: 'red',
+          // borderWidth: 2,
+          rowGap: 10,
+        }}>
+          <CustomTextInput
+            label="username"
+            placeholder="Enter your username"
+            onChangeText={setUsername}
+            containerStyle={styles.containerStyle}
+            textStyle={styles.textStyle}
+          />
+
+          <CustomTextInput
+            label="password"
+            placeholder="Enter your password"
+            onChangeText={setPassword}
+            secureTextEntry
+            containerStyle={styles.containerStyle}
+            textStyle={styles.textStyle}
+          />
+
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert('Forgot Password', 'Contact admin for reset')
+            }
+          >
+            <Text
+              style={{
+                color: 'rgb(79 104 21)',
+                fontSize: 14,
+                fontWeight: 600,
+                alignSelf: 'flex-end'
+              }}
+            >
+              forgot password?
+            </Text>
+          </TouchableOpacity>
+
+          <CustomButton
+            label={isLoading ? 'LOGGING IN...' : 'LOG IN'}
+            textStyle={{
+              color: 'rgb( 240 230 218)', //oat
               fontSize: 14,
-              fontWeight: '500',
+              fontWeight: '600',
+              textAlign: 'center',
             }}
-          >
-            Forgot Password?
-          </Text>
-        </TouchableOpacity>
+            containerStyle={{
+              width: '100%',
+              height: 50,
+              justifyContent: 'center',
+              borderRadius: 5,
+              backgroundColor: 'rgba(79, 104, 21, 0.8)', //accent
+              marginTop: 20,
+            }}
+            loading={isLoading}
+            onPress={handleLogin}
+          />
+        </View>
       </View>
 
-      {/* Register Section */}
-      <View
-        style={{
+      <View style={{
+        // borderWidth: 2,
+        // borderColor: 'blue',
+        rowGap: 20,
+      }}>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 10 }}>
+          <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(101, 76, 46, 0.1)' }} />
+          <Text style={{ marginHorizontal: 2, color: 'rgba(101, 76, 46, 0.4)', fontSize: 12, width: 'auto', paddingHorizontal: 10, textAlign: 'center', fontWeight: 600 }}>or</Text>
+          <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(101, 76, 46, 0.1)' }} />
+        </View>
+
+        <View style={{
+          flexDirection: 'row',
           alignItems: 'center',
-          marginTop: 24,
-          paddingHorizontal: 16,
-        }}
-      >
-        <Text style={{ color: '#8b7355', fontSize: 14 }}>
-          Not registered yet?
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(ROUTES.REGISTER)}
+          justifyContent: 'center',
+        }}>
+          <TouchableOpacity
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginHorizontal: 5,
+              borderWidth: 1,
+              borderRadius: 5,
+              borderColor: 'rgba(101, 76, 46, 0.4)',
+              paddingHorizontal: 25,
+              paddingVertical: 10,
+              gap: 10,
+            }}
+
+            onPress={() =>
+              Alert.alert('Google Login', 'work in progress')
+            }
+          >
+            <FontAwesome
+              name="google"
+              size={20}
+              color='rgb(101, 76, 46)'
+            />
+
+            <Text style={{
+              marginHorizontal: 2,
+              color: 'rgb(101, 76, 46)',
+              fontSize: 14,
+              fontWeight: 700,
+              textAlign: 'center'
+            }}> Continue with Google </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
           style={{
-            marginTop: 8,
-            paddingVertical: 12,
-            paddingHorizontal: 24,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'baseline',
+            justifyContent: 'center',
+            columnGap: 5,
+            marginTop: 30,
+            // borderWidth: 2,
+            // borderColor: 'red',
           }}
         >
-          <Text
-            style={{
-              color: '#654c2e',
-              fontSize: 16,
-              fontWeight: '600',
-            }}
-          >
-            Create Account
+          <Text style={{
+            color: '#8b7355',
+            fontSize: 14
+          }}>
+            Don't have an account?
           </Text>
-        </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ROUTES.REGISTER)}>
+            <Text
+              style={{
+                color: 'rgb(101, 76, 46)',
+                fontSize: 14,
+                fontWeight: '600',
+              }}
+            >
+              Create Account
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  containerStyle: {
+    width: '100%',
+  },
+  textStyle: {
+    fontSize: 14,
+    color: 'rgb(117 7 12)',
+    borderColor: 'rgba(117, 7, 13, 0.8)',
+    borderWidth: 2,
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  }
+});
 
 export default Login;

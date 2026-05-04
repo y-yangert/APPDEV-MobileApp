@@ -1,18 +1,23 @@
-import { Text, TouchableOpacity, View } from 'react-native';
 import React, { FC } from 'react';
+import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { resetLogin } from '../../app/actions';
+import { userLogout } from '../../app/actions/auth';
+
+
+import { ROUTES } from '../../utils';
 
 type NavigationPropType = NavigationProp<any>;
 
 const HomeScreen: FC = () => {
-  const navigation = useNavigation<NavigationPropType>();
   const dispatch = useDispatch();
+  const navigation = useNavigation<NavigationPropType>();
 
   const handleLogout = (): void => {
-    dispatch(resetLogin());
-    navigation.navigate('Login');
+    Alert.alert('Logout', 'Are you sure?', [
+      { text: 'Cancel' },
+      { text: 'Yes', onPress: () => dispatch(userLogout()) },
+    ]);
   };
 
   return (

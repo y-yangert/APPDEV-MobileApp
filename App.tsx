@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import './global.css';
 import { View } from 'react-native';
+import firebase from '@react-native-firebase/app';
 
 import AppNavigationNi from './src/navigations';
 

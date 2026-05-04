@@ -14,11 +14,8 @@ const Stack = createStackNavigator();
 
 const MainNav: FC = () => {
   return (
-    <Stack.Navigator initialRouteName={ROUTES.HOME}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />
-      <Stack.Screen name={ROUTES.PROFILE} component={ProfileScreen} />
-      <Stack.Screen name={ROUTES.ERROR} component={ErrorScreen} />
-      <Stack.Screen name={ROUTES.LOGIN} component={Login} />
     </Stack.Navigator>
   );
 };

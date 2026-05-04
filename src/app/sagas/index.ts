@@ -1,10 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
-import { SagaIterator } from 'redux-saga';
-import { userLogin, userRegister } from './auth';
+import { userLogin, userRegister, userLogout } from './auth';
 
-export default function* rootSaga(): SagaIterator {
-  yield all([
-    fork(userLogin),
-    fork(userRegister)
-  ]);
+export default function* rootSaga() {
+  yield all([fork(userLogin), fork(userRegister), fork(userLogout)]);
 }

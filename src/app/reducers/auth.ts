@@ -1,93 +1,52 @@
+// src/app/reducers/auth.ts
 import {
-  USER_LOGIN_REQUEST,
   USER_LOGIN_COMPLETED,
   USER_LOGIN_ERROR,
-  USER_LOGIN_RESET,
-  USER_REGISTER_REQUEST,
-  USER_REGISTER_COMPLETED,
-  USER_REGISTER_ERROR,
-  AuthAction,
-} from '../actions';
+  USER_LOGIN_REQUEST,
+  USER_LOGOUT_COMPLETED,
+  USER_LOGOUT
+} from '../actions/auth';
 
-import {
-  AUTH_RESPONSE_USER,
-  AuthResponse,
-} from '../constants/user';
-
-export interface AuthState {
-  data: AuthResponse | null;
-  isLoading: boolean;
-  isError: boolean;
-  errorMessage: string | null;
-}
-
-const INITIAL_STATE: AuthState = {
+const initialState = {
   data: null,
+  user: null,
+  token: null,
   isLoading: false,
-  isError: false,
-  errorMessage: null,
+  error: null,
 };
 
-export default function authReducer(
-  state = INITIAL_STATE,
-  action: AuthAction,
-): AuthState {
+export default function authReducer(state = initialState, action) {
   switch (action.type) {
-    case USER_LOGIN_REQUEST:
-      return {
-        ...state,
+    case USER_LOGIN_REQUEST: {
+      console.log('[authReducer] USER_LOGIN_REQUEST');
+      return { 
+        ...state, 
         data: null,
-        isLoading: true,
-        isError: false,
-        errorMessage: null,
-      };
+        isLoading: true, 
+        error: null };
+    }
 
-    case USER_LOGIN_COMPLETED:
-      // you can log if you want, but keep types tight
+    case USER_LOGIN_COMPLETED: {
+      console.log('[authReducer] USER_LOGIN_COMPLETED, token?', Boolean(action?.payload?.token));
       return {
         ...state,
         data: action.payload,
         isLoading: false,
-        isError: false,
-        errorMessage: null,
+        user: action.payload?.user ?? null,
+        token: action.payload?.token ?? null,
+        error: null,
       };
+    }
 
-    case USER_LOGIN_ERROR:
-      return {
-        ...state,
-        data: null,
-        isLoading: false,
-        isError: true,
-        errorMessage: action.payload,
-      };
+    case USER_LOGIN_ERROR: {
+      console.error('[authReducer] USER_LOGIN_ERROR', action.payload);
+      return { ...state, isLoading: false, error: action.payload };
+    }
 
-    case USER_LOGIN_RESET:
-      return INITIAL_STATE;
-
-    case USER_REGISTER_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-        isError: false,
-        errorMessage: null,
-      };
-
-    case USER_REGISTER_COMPLETED:
-      return {
-        ...state,
-        isLoading: false,
-        isError: false,
-        errorMessage: null,
-      };
-
-    case USER_REGISTER_ERROR:
-      return {
-        ...state,
-        data: null,
-        isLoading: false,
-        isError: true,
-        errorMessage: action.payload,
-      };
+    case USER_LOGOUT_COMPLETED: {
+      console.log('[authReducer] USER_LOGOUT_COMPLETED');
+      return { ...initialState };
+    }
 
     default:
       return state;

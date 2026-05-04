@@ -1,17 +1,4 @@
-import { AuthResponse, User } from '../constants/user';
-
-interface LoginCredentials {
-  username: string;
-  password: string;
-}
-
-interface RegisterCredentials {
-  username: string;
-  email: string;
-  password: string;
-}
-
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'http://192.168.254.104:8000/api';
 
 const options = {
   method: 'POST',
@@ -23,26 +10,36 @@ const options = {
 
 export const authLogin = async (
   creds: { username: string; password: string }
-): Promise<AuthResponse> => {
-  
-  const response = await fetch('/api/auth/login', {
+): Promise<{ success: boolean; user: object; token?: string }> => {
+  const response = await fetch(BASE_URL + '/login', {
     method: 'POST',
-    body: JSON.stringify(creds),
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(creds),
   });
-  if (!response.ok) throw new Error('Login failed');
+
+  if (!response.ok && response.status === 401) {
+    throw new Error('Invalid username or password');
+  }
+  
+  if (!response.ok) {
+    const body = await response.text();
+    console.log('Response body:', body);
+    throw new Error(`Login failed: ${response.status} - ${body}`);
+  }
+
   return await response.json();
 };
 
 export const authRegister = async (
   data: { username: string; email: string; password: string }
-): Promise<AuthResponse> => {
-  const response = await fetch('/api/auth/register', {
+): Promise<{ success: boolean; user: object; token?: string }> => {
+  const response = await fetch(BASE_URL + '/register', {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error('Registration failed');
+
+  if (!response.ok) throw new Error('Registration failed: ' + response.status);
+
   return await response.json();
 };
-

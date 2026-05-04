@@ -31,13 +31,21 @@ const CustomButton: FC<CustomButtonProps> = ({
   return (
     <>
       {loading ? (
-        <View style={{ height: 80, padding: 16, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={
+          { 
+            height: 80,
+            padding: 16,
+            justifyContent: 'center',
+            alignItems: 'center', 
+          }
+        }>
+          
           <ActivityIndicator size="large" color="blue" />
         </View>
       ) : (
-        <View style={containerStyle}>
+        <View style = {containerStyle}>
           <TouchableOpacity onPress={onPress}>
-            <View style={{ padding: width * 0.014 }}>
+            <View>
               <Text style={textStyle}>{label}</Text>
             </View>
           </TouchableOpacity>

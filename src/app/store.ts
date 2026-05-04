@@ -1,15 +1,9 @@
-// app/store.ts
+import configureStore from './reducers';
 
-import { Store, Dispatch } from 'redux';
-import { Persistor } from 'redux-persist';
-import { RootState } from './reducers';
+import rootSaga from './sagas';
 
-export type RootState = RootState;
-export type AppDispatch = Dispatch<any>; // or be more specific later
+const { store, persistor, runSaga } = configureStore();
 
-export { configureStore } from './reducers';
-export interface StoreSetup {
-  store: Store<RootState>;
-  persistor: Persistor;
-  runSaga: (saga: any) => void;
-}
+runSaga(rootSaga);
+
+export { store, persistor };
